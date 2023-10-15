@@ -1,4 +1,4 @@
-package com.novozy.spring_new_jwt.entity;
+package com.novozy.spring_new_jwt.payload.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +18,6 @@ public class UserInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String email;
     private String password;
     private String roles;
 }

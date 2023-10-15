@@ -1,6 +1,7 @@
 package com.novozy.spring_new_jwt.service;
 
-import com.novozy.spring_new_jwt.entity.UserInfo;
+import com.novozy.spring_new_jwt.payload.entity.UserInfo;
+import com.novozy.spring_new_jwt.repository.TrainerRepository;
 import com.novozy.spring_new_jwt.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class UserInfoService implements UserDetailsService {
     @Autowired
     private  UserInfoRepository repository;
+
     @Autowired
     private  PasswordEncoder encoder;
 

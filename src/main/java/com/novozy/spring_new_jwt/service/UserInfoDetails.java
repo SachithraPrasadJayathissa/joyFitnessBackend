@@ -1,6 +1,6 @@
 package com.novozy.spring_new_jwt.service;
 
-import com.novozy.spring_new_jwt.entity.UserInfo;
+import com.novozy.spring_new_jwt.payload.entity.UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.stream.Collectors;
 
-public class UserInfoDetails implements UserDetails {
+public class  UserInfoDetails implements UserDetails {
 
     private String name;
     private String password;

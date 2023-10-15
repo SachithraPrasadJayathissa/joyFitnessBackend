@@ -1,4 +1,4 @@
-package com.novozy.spring_new_jwt.entity;
+package com.novozy.spring_new_jwt.payload.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthRequest {
-
     private String username;
     private String password;
 

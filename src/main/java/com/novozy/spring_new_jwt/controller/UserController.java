@@ -1,9 +1,9 @@
 package com.novozy.spring_new_jwt.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
-import com.novozy.spring_new_jwt.entity.AuthRequest;
-import com.novozy.spring_new_jwt.entity.UserInfo;
+import com.novozy.spring_new_jwt.payload.entity.AuthRequest;
+import com.novozy.spring_new_jwt.payload.entity.UserInfo;
+import com.novozy.spring_new_jwt.repository.UserInfoRepository;
 import com.novozy.spring_new_jwt.service.JwtService;
 import com.novozy.spring_new_jwt.service.UserInfoService;
 import org.json.simple.JSONObject;
@@ -17,7 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class UserController {
 
@@ -27,43 +30,33 @@ public class UserController {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     Gson gson = new Gson();
 
 
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome to Novozy";
-    }
 
-    @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody UserInfo userInfo) {
-        return userInfoService.addUser(userInfo);
-    }
-
-    @GetMapping("/user/userProfile")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    public String userProfile() {
-        return "Welcome to User Profile";
-    }
-
-    @GetMapping("/admin/adminProfile")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String adminProfile() {
-        return "Welcome to Admin Profile";
-    }
 
     @PostMapping("/generateToken")
     public ResponseEntity authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        if (authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(authRequest.getUsername());
-            JSONObject object = new JSONObject();
-            object.put("token", token);
-            return new ResponseEntity<>(object, HttpStatus.OK);
+        Optional<UserInfo> userInfo = userInfoRepository.findByName(authRequest.getUsername());
+        if (userInfo.isPresent()) {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            if (authentication.isAuthenticated()) {
+                String token = jwtService.generateToken(authRequest.getUsername());
+                JSONObject object = new JSONObject();
+                object.put("token", token);
+                object.put("role", userInfo.get().getRoles());
+                return new ResponseEntity<>(object, HttpStatus.OK);
 
+            } else {
+                throw new UsernameNotFoundException("Invalid Credentials");
+            }
         } else {
-            throw new UsernameNotFoundException("invalid user request !");
+            System.out.println("2");
+            return new ResponseEntity<>("User Not Found", HttpStatus.BAD_REQUEST);
         }
+
     }
 }
