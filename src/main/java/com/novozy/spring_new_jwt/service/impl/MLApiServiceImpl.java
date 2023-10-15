@@ -58,9 +58,9 @@ public class MLApiServiceImpl implements MLApiService {
                 }
             }
 
-//            if(colPosition==2){
-//                schedule="test schedule";
-//            }
+            if(colPosition==2){
+                schedule="test schedule";
+            }
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("scheduleValue",schedule);
             return new ResponseEntity<>(jsonObject, HttpStatus.OK);
