@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     @Query(value = "SELECT * FROM trainer where nic = ?1", nativeQuery = true)
     Optional<Trainer> exitsByNIC(String nic);
-
     Optional<Trainer> findByName(String username);
 
 

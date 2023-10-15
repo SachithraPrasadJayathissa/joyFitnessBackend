@@ -56,7 +56,7 @@ public class GymMemberController {
         return gymMemberService.deleteMember(member);
     }
 
-    @GetMapping("/countmembers")
+    @GetMapping("/countMembers")
     public long countUsers() {
         return gymMemberService.countUsers();
     }

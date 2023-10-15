@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/trainer")
 public class TrainerController {
@@ -14,18 +14,10 @@ public class TrainerController {
     @Autowired
     private TrainerService trainerService;
 
-    /**
-     * add trainer
-     */
-
     @PostMapping("/add")
     public ResponseEntity addTrainer(@RequestBody Trainer trainer) {
         return trainerService.addTrainer(trainer);
     }
-
-    /**
-     * get trainer as list
-     */
 
     @GetMapping
     public ResponseEntity getAllTrainers()
@@ -33,18 +25,10 @@ public class TrainerController {
         return trainerService.getTrainers();
     }
 
-    /**
-     * get trainer by id
-     */
-
     @GetMapping("/get")
     public Trainer getTrainerById(@RequestParam Integer id) {
         return trainerService.getTrainer(id);
     }
-
-    /**
-     * update trainer
-     */
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateTrainerById(@PathVariable Integer id, @RequestBody Trainer trainer) {
@@ -52,16 +36,12 @@ public class TrainerController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * delete trainer
-     */
-
     @DeleteMapping("delete")
     public ResponseEntity deleteTrainer(@RequestBody Trainer trainer){
         return trainerService.deleteTrainers(trainer);
     }
 
-    @GetMapping("/counttrainer")
+    @GetMapping("/countTrainer")
     public long countTrainer() {
         return trainerService.countTrainer();
     }
