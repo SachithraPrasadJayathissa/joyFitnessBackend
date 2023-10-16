@@ -59,7 +59,7 @@ public class MLApiServiceImpl implements MLApiService {
             }
 
             if(colPosition==2){
-                schedule="test schedule";
+                schedule="Bulk Up Blueprint";
             }
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("scheduleValue",schedule);
