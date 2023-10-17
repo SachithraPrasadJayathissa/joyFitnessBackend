@@ -1,7 +1,7 @@
-package com.novozy.spring_new_jwt.config;
+package com.campus.joy_gym.config;
 
-import com.novozy.spring_new_jwt.filter.JwtAuthFilter;
-import com.novozy.spring_new_jwt.service.UserInfoService;
+import com.campus.joy_gym.filter.JwtAuthFilter;
+import com.campus.joy_gym.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private  JwtAuthFilter authFilter;
+    private JwtAuthFilter authFilter;
 
     // User Creation
     @Bean

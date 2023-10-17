@@ -1,4 +1,4 @@
-package com.novozy.spring_new_jwt.payload.dto;
+package com.campus.joy_gym.payload.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

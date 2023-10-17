@@ -1,7 +1,7 @@
-package com.novozy.spring_new_jwt.controller;
+package com.campus.joy_gym.controller;
 
-import com.novozy.spring_new_jwt.payload.dto.ApiRequestDTO;
-import com.novozy.spring_new_jwt.service.MLApiService;
+import com.campus.joy_gym.service.MLApiService;
+import com.campus.joy_gym.payload.dto.ApiRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

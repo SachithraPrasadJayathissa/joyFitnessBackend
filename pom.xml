@@ -8,12 +8,12 @@
         <version>3.0.8</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>spring_new_jwt</artifactId>
+    <groupId>com.campus</groupId>
+    <artifactId>joy_gym</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Spring3.0JWT</name>
-    <description>Spring3.0JWT</description>
+    <name>joy_Gym</name>
+    <description>joy_Gym</description>
     <properties>
         <java.version>17</java.version>
     </properties>

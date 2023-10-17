@@ -1,16 +1,15 @@
-package com.novozy.spring_new_jwt.controller;
+package com.campus.joy_gym.controller;
 
+import com.campus.joy_gym.payload.entity.AuthRequest;
+import com.campus.joy_gym.repository.UserInfoRepository;
+import com.campus.joy_gym.service.JwtService;
+import com.campus.joy_gym.service.UserInfoService;
 import com.google.gson.Gson;
-import com.novozy.spring_new_jwt.payload.entity.AuthRequest;
-import com.novozy.spring_new_jwt.payload.entity.UserInfo;
-import com.novozy.spring_new_jwt.repository.UserInfoRepository;
-import com.novozy.spring_new_jwt.service.JwtService;
-import com.novozy.spring_new_jwt.service.UserInfoService;
+import com.campus.joy_gym.payload.entity.UserInfo;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

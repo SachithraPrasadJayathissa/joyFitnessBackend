@@ -1,7 +1,7 @@
-package com.novozy.spring_new_jwt.filter;
+package com.campus.joy_gym.filter;
 
-import com.novozy.spring_new_jwt.service.JwtService;
-import com.novozy.spring_new_jwt.service.UserInfoService;
+import com.campus.joy_gym.service.JwtService;
+import com.campus.joy_gym.service.UserInfoService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,8 +22,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     @Autowired
     private UserInfoService userDetailsService;
-
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
