@@ -1,4 +1,4 @@
-package com.novozy.spring_new_jwt;
+package com.campus.joy_gym;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

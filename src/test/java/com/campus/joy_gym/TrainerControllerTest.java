@@ -1,10 +1,9 @@
-package com.novozy.spring_new_jwt;
+package com.campus.joy_gym;
 
-
-import com.novozy.spring_new_jwt.controller.TrainerController;
-import com.novozy.spring_new_jwt.payload.dto.MessageResponse;
-import com.novozy.spring_new_jwt.payload.entity.Trainer;
-import com.novozy.spring_new_jwt.repository.TrainerRepository;
+import com.campus.joy_gym.controller.TrainerController;
+import com.campus.joy_gym.payload.dto.MessageResponse;
+import com.campus.joy_gym.payload.entity.Trainer;
+import com.campus.joy_gym.repository.TrainerRepository;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,11 +42,7 @@ public class TrainerControllerTest {
 
         when(trainerRepository.exitsByNIC(trainer.getNic())).thenReturn(Optional.empty());
         when(trainerRepository.save(any(Trainer.class))).thenReturn(trainer);
-
-        // When
         ResponseEntity<MessageResponse> response = trainerController.addTrainer(trainer);
-
-        // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Successfully Saved Trainer.", response.getBody().getMessage());
     }
