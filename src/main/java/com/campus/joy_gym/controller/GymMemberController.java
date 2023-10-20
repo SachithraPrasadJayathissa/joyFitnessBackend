@@ -20,10 +20,6 @@ public class GymMemberController {
         return gymMemberService.addMember(member);
     }
 
-    /**
-     * get trainer as list
-     */
-
     @GetMapping
     public ResponseEntity getAllMembers() {
         return gymMemberService.getMembers();
@@ -37,16 +33,12 @@ public class GymMemberController {
         return gymMemberService.getUserDetails(gymMember);
     }
 
-
     @PutMapping("/update")
     public ResponseEntity updateMemberById(@RequestBody GymMember member) {
         return gymMemberService.updateMember(member);
 
     }
 
-    /**
-     * delete member
-     */
     @DeleteMapping("/delete")
     public ResponseEntity deleteMember(@RequestBody GymMember member){
         return gymMemberService.deleteMember(member);
@@ -58,7 +50,9 @@ public class GymMemberController {
     }
 
     @GetMapping("/getSchedule")
-    public ResponseEntity getMemberSchedule(@RequestBody GymMember member) {
-        return gymMemberService.getMemberSchedule(member.getUsername());
+    public ResponseEntity getMemberSchedule(@RequestParam String username) {
+        GymMember gymMember = new GymMember();
+        gymMember.setUsername(username);
+        return gymMemberService.getMemberSchedule(username);
     }
 }

@@ -203,13 +203,13 @@ public class GymMemberServiceImpl implements GymMemberService {
                 int j = 1;
                 for (int i = 0; i < s.getWorkouts().size(); i++) {
                     JSONObject object = new JSONObject();
-                    object.put("WorkOut - " + j , s.getWorkouts().get(i));
+                    object.put("WorkOut - ", s.getWorkouts().get(i));
                     array.add(object);
                     j++;
                 }
-//                return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
-//                        "get Member Workout Plans.", array), HttpStatus.OK);
-                return new ResponseEntity<>(array,HttpStatus.OK);
+                return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
+                        "get Member Workout Plans.", array), HttpStatus.OK);
+//                return new ResponseEntity<>(array,HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Faield",
                         "Username Not Found", username), HttpStatus.OK);
