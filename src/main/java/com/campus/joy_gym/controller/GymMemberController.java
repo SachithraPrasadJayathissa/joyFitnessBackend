@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/member")
 
@@ -29,18 +29,14 @@ public class GymMemberController {
         return gymMemberService.getMembers();
     }
 
-    /**
-     * get member by id
-     */
 
-    @GetMapping("/get")
-    public GymMember getMembersById(@RequestParam Integer id) {
-        return gymMemberService.getMember(id);
+    @GetMapping(value = "/getMember")
+    public ResponseEntity getMembersById(@RequestParam String id) {
+        GymMember gymMember = new GymMember();
+        gymMember.setNic(id);
+        return gymMemberService.getUserDetails(gymMember);
     }
 
-    /**
-     * update member
-     */
 
     @PutMapping("/update")
     public ResponseEntity updateMemberById(@RequestBody GymMember member) {
@@ -59,5 +55,10 @@ public class GymMemberController {
     @GetMapping("/countMembers")
     public long countUsers() {
         return gymMemberService.countUsers();
+    }
+
+    @GetMapping("/getSchedule")
+    public ResponseEntity getMemberSchedule(@RequestBody GymMember member) {
+        return gymMemberService.getMemberSchedule(member.getUsername());
     }
 }

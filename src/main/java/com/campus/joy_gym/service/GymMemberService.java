@@ -17,4 +17,7 @@ public interface GymMemberService {
 
     long countUsers();
 
+    ResponseEntity getUserDetails(GymMember member);
+    ResponseEntity getMemberSchedule(String username);
+
 }

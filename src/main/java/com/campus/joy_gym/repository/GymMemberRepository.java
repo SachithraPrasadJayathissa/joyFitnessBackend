@@ -13,4 +13,10 @@ public interface GymMemberRepository extends JpaRepository<GymMember, Integer> {
     @Query(value = "SELECT * FROM gymmember where nic = ?1", nativeQuery = true)
     Optional<GymMember> exitsByNIC(String nic);
 
+    @Query(value = "SELECT * FROM gymmember where nic = ?1", nativeQuery = true)
+    GymMember getDetails(String nic);
+
+    @Query(value = "SELECT * FROM gymmember where username = ?1" , nativeQuery = true)
+    Optional<GymMember> getDetailsByUsername(String username);
+
 }

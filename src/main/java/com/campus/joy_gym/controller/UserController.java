@@ -34,9 +34,6 @@ public class UserController {
 
     Gson gson = new Gson();
 
-
-
-
     @PostMapping("/generateToken")
     public ResponseEntity authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Optional<UserInfo> userInfo = userInfoRepository.findByName(authRequest.getUsername());
