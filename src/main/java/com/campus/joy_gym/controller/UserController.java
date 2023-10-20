@@ -44,6 +44,7 @@ public class UserController {
                 JSONObject object = new JSONObject();
                 object.put("token", token);
                 object.put("role", userInfo.get().getRoles());
+                object.put("username", userInfo.get().getName());
                 return new ResponseEntity<>(object, HttpStatus.OK);
 
             } else {
