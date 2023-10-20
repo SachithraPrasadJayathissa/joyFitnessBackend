@@ -33,11 +33,12 @@ public class GymMemberController {
         return gymMemberService.getUserDetails(gymMember);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateMemberById(@RequestBody GymMember member) {
+    @PostMapping(value = "/update",produces = "application/json")
+    public ResponseEntity<?> updateMemberById(@RequestBody GymMember member) {
         return gymMemberService.updateMember(member);
 
     }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity deleteMember(@RequestBody GymMember member){

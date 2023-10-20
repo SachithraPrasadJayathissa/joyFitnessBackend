@@ -90,14 +90,16 @@ public class GymMemberServiceImpl implements GymMemberService {
 
     @Override
     public ResponseEntity updateMember(GymMember user) {
+        System.out.println(user.getNic());
         Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(user.getNic());
+
         GymMember oldObj = gymMember.get();
         try {
             if (gymMember.isPresent()) {
 
-                oldObj.setName(user.getName());
-                oldObj.setUsername(user.getUsername());
-                oldObj.setPassword(user.getPassword());
+                oldObj.setName(gymMember.get().getName());
+                oldObj.setUsername(gymMember.get().getUsername());
+                oldObj.setPassword(gymMember.get().getPassword());
                 oldObj.setPhone(user.getPhone());
                 oldObj.setNic(user.getNic());
                 oldObj.setAge(user.getAge());
@@ -107,6 +109,7 @@ public class GymMemberServiceImpl implements GymMemberService {
                 oldObj.setBMI(user.getBMI());
                 oldObj.setWorkout_time(user.getWorkout_time());
                 oldObj.setWorkout_experience(user.getWorkout_experience());
+                oldObj.setFitness_goal(user.getFitness_goal());
                 oldObj.setSchedule(user.getSchedule());
 
                 GymMember save = gymMemberRepository.save(oldObj);
@@ -167,7 +170,6 @@ public class GymMemberServiceImpl implements GymMemberService {
 
     @Override
     public ResponseEntity getUserDetails(GymMember member) {
-        System.out.printf(member.getNic());
         GymMemberDto gymMemberDto = new GymMemberDto();
         GymMember details = gymMemberRepository.getDetails(member.getNic());
         gymMemberDto.setAge(details.getAge());
@@ -180,8 +182,7 @@ public class GymMemberServiceImpl implements GymMemberService {
         gymMemberDto.setWorkout_experience(details.getWorkout_experience());
         gymMemberDto.setWorkout_time(details.getWorkout_time());
         gymMemberDto.setFitness_goal(details.getFitness_goal());
-
-
+        gymMemberDto.setNic(details.getNic());
         LOGGER.info("GymMemberController | GymMemberService | getUserDetails | "+ new Gson().toJson(gymMemberDto));
 //        return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
 //                "Successfully get details", gymMemberDto), HttpStatus.OK);
