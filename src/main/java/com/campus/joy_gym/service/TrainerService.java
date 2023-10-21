@@ -12,7 +12,6 @@ public interface TrainerService {
 
     Trainer getTrainer(Integer id);
 
-    void updateTrainer(Integer id, Trainer user);
 
     ResponseEntity deleteTrainers(Trainer trainer);
 

@@ -9,8 +9,6 @@ public interface GymMemberService {
 
     ResponseEntity getMembers();
 
-    GymMember getMember(Integer id);
-
     ResponseEntity updateMember(GymMember user);
 
     ResponseEntity deleteMember(GymMember member);

@@ -35,26 +35,28 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public ResponseEntity addTrainer(Trainer user) {
-        Optional<Trainer> trainer = trainerRepository.exitsByNIC(user.getNic());
-        if (!trainer.isPresent()) {
-            Trainer save = trainerRepository.save(user);
-            UserInfo userInfo = new UserInfo();
-            userInfo.setPassword(encoder.encode(user.getPassword()));
-            userInfo.setName(user.getUsername());
-            userInfo.setRoles("ROLE_TRAINER");
-            userInfoRepository.save(userInfo);
-            LOGGER.info("TrainerController | TrainerService | addTrainer | " + save);
-            return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
-                    "Successfully Saved Trainer.", save), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Failed",
-                    "Trainer Already Exists : " + user.getNic(), user.getNic()), HttpStatus.OK);
+        try {
+            Optional<Trainer> trainer = trainerRepository.exitsByNIC(user.getNic());
+            if (!trainer.isPresent()) {
+                Trainer save = trainerRepository.save(user);
+                UserInfo userInfo = new UserInfo();
+                userInfo.setPassword(encoder.encode(user.getPassword()));
+                userInfo.setName(user.getUsername());
+                userInfo.setRoles("ROLE_TRAINER");
+                userInfoRepository.save(userInfo);
+                LOGGER.info("TrainerController | TrainerService | addTrainer | " + save);
+                return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
+                        "Successfully Saved Trainer.", save), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Failed",
+                        "Trainer Already Exists : " + user.getNic(), user.getNic()), HttpStatus.OK);
+            }
+        }catch (Exception ex){
+            return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Error",
+                    ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
-    /**
-     * get users as list
-     */
     @Override
     public ResponseEntity getTrainers() {
         try {
@@ -71,36 +73,13 @@ public class TrainerServiceImpl implements TrainerService {
             return new ResponseEntity<>(new MessageResponse(ex), HttpStatus.OK);
         }
     }
-
-    /**
-     * get user by id
-     */
-
     @Override
     public Trainer getTrainer(Integer id) {
-//        check weather the user is in database or not
         Trainer user = trainerRepository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid user Id:" + id));
 
         return user;
-    }
-
-    /**
-     * update user
-     */
-
-    @Override
-    public void updateTrainer(Integer id, Trainer user) {
-//        check weather the user is in database or not
-        trainerRepository
-                .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid user Id:" + id));
-
-        user.setId(id);
-
-        trainerRepository.save(user);
-
     }
 
     @Override
@@ -127,11 +106,12 @@ public class TrainerServiceImpl implements TrainerService {
                     "An error occurred while deleting trainer."), HttpStatus.BAD_REQUEST);
         }
     }
-
     @Override
     public long countTrainer() {
         try {
-            return trainerRepository.count();
+            long count = trainerRepository.count();
+            LOGGER.info("GymTrainerController | TrainerService | countTrainer | " + count);
+            return count;
         }catch (Exception ex){
             LOGGER.info("GymTrainerController | TrainerService | countTrainer | " + ex);
             return 0;

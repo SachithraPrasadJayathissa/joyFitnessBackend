@@ -30,11 +30,6 @@ public class TrainerController {
         return trainerService.getTrainer(id);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateTrainerById(@PathVariable Integer id, @RequestBody Trainer trainer) {
-        trainerService.updateTrainer(id, trainer);
-        return ResponseEntity.noContent().build();
-    }
 
     @DeleteMapping("delete")
     public ResponseEntity deleteTrainer(@RequestBody Trainer trainer){

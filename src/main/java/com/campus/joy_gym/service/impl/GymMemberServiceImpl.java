@@ -48,20 +48,26 @@ public class GymMemberServiceImpl implements GymMemberService {
     @Override
     public ResponseEntity addMember(GymMember member) {
 
-        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic());
-        if (!gymMember.isPresent()) {
-            GymMember save = gymMemberRepository.save(member);
-            UserInfo userInfo = new UserInfo();
-            userInfo.setPassword(encoder.encode(member.getPassword()));
-            userInfo.setName(member.getUsername());
-            userInfo.setRoles("ROLE_MEMBER");
-            userInfoRepository.save(userInfo);
-            LOGGER.info("GymMemberController | GymMemberService | addMember | " + save);
-            return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
-                    "Successfully Saved User.", save), HttpStatus.OK);
-        } else {
+        try {
+            Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic(),member.getUsername(),member.getPassword());
+            if (!gymMember.isPresent()) {
+                GymMember save = gymMemberRepository.save(member);
+                UserInfo userInfo = new UserInfo();
+                userInfo.setPassword(encoder.encode(member.getPassword()));
+                userInfo.setName(member.getUsername());
+                userInfo.setRoles("ROLE_MEMBER");
+                userInfoRepository.save(userInfo);
+                LOGGER.info("GymMemberController | GymMemberService | addMember | " + save);
+                return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
+                        "Successfully Saved User.", save), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Failed",
+                        "User Already Exists : " + member.getNic(), member.getNic()), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            LOGGER.info("GymMemberController | GymMemberService | addMember | " + ex);
             return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Failed",
-                    "User Already Exists : " + member.getNic(), member.getNic()), HttpStatus.OK);
+                    "User Already Exists : " + member.getNic(), member.getNic()), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -84,14 +90,9 @@ public class GymMemberServiceImpl implements GymMemberService {
     }
 
     @Override
-    public GymMember getMember(Integer id) { // no need
-        return null;
-    }
-
-    @Override
     public ResponseEntity updateMember(GymMember user) {
         System.out.println(user.getNic());
-        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(user.getNic());
+        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(user.getNic(),user.getUsername(),user.getPassword());
 
         GymMember oldObj = gymMember.get();
         try {
@@ -134,7 +135,7 @@ public class GymMemberServiceImpl implements GymMemberService {
     @Override
     public ResponseEntity deleteMember(GymMember member) {
 
-        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic());
+        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic(),member.getUsername(),member.getPassword());
         GymMember oldObj = gymMember.get();
         try {
             if (gymMember.isPresent()) {
@@ -160,7 +161,9 @@ public class GymMemberServiceImpl implements GymMemberService {
     @Override
     public long countUsers() {
         try {
-            return gymMemberRepository.count();
+            long count = gymMemberRepository.count();
+            LOGGER.info("GymMemberController | GymMemberService | countMember |" + count);
+            return count;
         } catch (Exception ex) {
             LOGGER.info("GymMemberController | GymMemberService | countMember | " + ex);
             return 0;
@@ -170,29 +173,30 @@ public class GymMemberServiceImpl implements GymMemberService {
 
     @Override
     public ResponseEntity getUserDetails(GymMember member) {
-        GymMemberDto gymMemberDto = new GymMemberDto();
-        GymMember details = gymMemberRepository.getDetails(member.getNic());
-        gymMemberDto.setAge(details.getAge());
-        gymMemberDto.setGender(details.getGender());
-        gymMemberDto.setBMI(details.getBMI());
-        gymMemberDto.setFitness_goal(details.getFitness_goal());
-        gymMemberDto.setHeight(details.getHeight());
-        gymMemberDto.setWeight(details.getWeight());
-        gymMemberDto.setPhone(details.getPhone());
-        gymMemberDto.setWorkout_experience(details.getWorkout_experience());
-        gymMemberDto.setWorkout_time(details.getWorkout_time());
-        gymMemberDto.setFitness_goal(details.getFitness_goal());
-        gymMemberDto.setNic(details.getNic());
-        LOGGER.info("GymMemberController | GymMemberService | getUserDetails | "+ new Gson().toJson(gymMemberDto));
-//        return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
-//                "Successfully get details", gymMemberDto), HttpStatus.OK);
-
-        return new ResponseEntity<>(gymMemberDto,HttpStatus.OK);
-
+        try {
+            GymMemberDto gymMemberDto = new GymMemberDto();
+            GymMember details = gymMemberRepository.getDetails(member.getNic());
+            gymMemberDto.setAge(details.getAge());
+            gymMemberDto.setGender(details.getGender());
+            gymMemberDto.setBMI(details.getBMI());
+            gymMemberDto.setFitness_goal(details.getFitness_goal());
+            gymMemberDto.setHeight(details.getHeight());
+            gymMemberDto.setWeight(details.getWeight());
+            gymMemberDto.setPhone(details.getPhone());
+            gymMemberDto.setWorkout_experience(details.getWorkout_experience());
+            gymMemberDto.setWorkout_time(details.getWorkout_time());
+            gymMemberDto.setFitness_goal(details.getFitness_goal());
+            gymMemberDto.setNic(details.getNic());
+            LOGGER.info("GymMemberController | GymMemberService | getUserDetails | " + new Gson().toJson(gymMemberDto));
+            return new ResponseEntity<>(gymMemberDto, HttpStatus.OK);
+        } catch (Exception ex) {
+            LOGGER.info("GymMemberController | GymMemberService | getUserDetails | " + ex);
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
     }
     @Override
     public ResponseEntity getMemberSchedule(String username) {
-        try{
+        try {
             Optional<GymMember> byUsername = gymMemberRepository.getDetailsByUsername(username);
             if (byUsername.isPresent()) {
                 GymMember gymMember = byUsername.get();
@@ -208,16 +212,18 @@ public class GymMemberServiceImpl implements GymMemberService {
                     array.add(object);
                     j++;
                 }
+                LOGGER.info("GymMemberController | GymMemberService | getMemberSchedule | " + array);
                 return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Success",
                         "get Member Workout Plans.", array), HttpStatus.OK);
-//                return new ResponseEntity<>(array,HttpStatus.OK);
-            }else {
+            } else {
+                LOGGER.info("GymMemberController | GymMemberService | getMemberSchedule | " + username);
                 return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Faield",
                         "Username Not Found", username), HttpStatus.OK);
             }
-        }catch (Exception e) {
+        } catch (Exception ex) {
+            LOGGER.info("GymMemberController | GymMemberService | getMemberSchedule | " + ex);
             return new ResponseEntity<>(new MessageResponse(HttpStatus.OK.value(), "Error",
-                    e.getMessage()), HttpStatus.OK);
+                    ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
