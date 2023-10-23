@@ -39,7 +39,6 @@ public class GymMemberController {
 
     }
 
-
     @DeleteMapping("/delete")
     public ResponseEntity deleteMember(@RequestBody GymMember member){
         return gymMemberService.deleteMember(member);

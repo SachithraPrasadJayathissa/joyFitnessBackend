@@ -49,7 +49,7 @@ public class GymMemberServiceImpl implements GymMemberService {
     public ResponseEntity addMember(GymMember member) {
 
         try {
-            Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic(),member.getUsername(),member.getPassword());
+            Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic());
             if (!gymMember.isPresent()) {
                 GymMember save = gymMemberRepository.save(member);
                 UserInfo userInfo = new UserInfo();
@@ -92,7 +92,7 @@ public class GymMemberServiceImpl implements GymMemberService {
     @Override
     public ResponseEntity updateMember(GymMember user) {
         System.out.println(user.getNic());
-        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(user.getNic(),user.getUsername(),user.getPassword());
+        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(user.getNic());
 
         GymMember oldObj = gymMember.get();
         try {
@@ -135,7 +135,7 @@ public class GymMemberServiceImpl implements GymMemberService {
     @Override
     public ResponseEntity deleteMember(GymMember member) {
 
-        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic(),member.getUsername(),member.getPassword());
+        Optional<GymMember> gymMember = gymMemberRepository.exitsByNIC(member.getNic());
         GymMember oldObj = gymMember.get();
         try {
             if (gymMember.isPresent()) {

@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface GymMemberRepository extends JpaRepository<GymMember, Integer> {
 
-    @Query(value = "SELECT * FROM gymmember WHERE nic = ?1 OR username = ?2 OR password = ?3", nativeQuery = true)
-    Optional<GymMember> exitsByNIC(String nic,String username,String password);
+    @Query(value = "SELECT * FROM gymmember WHERE nic = ?1", nativeQuery = true)
+    Optional<GymMember> exitsByNIC(String nic);
 
     @Query(value = "SELECT * FROM gymmember where nic = ?1", nativeQuery = true)
     GymMember getDetails(String nic);
